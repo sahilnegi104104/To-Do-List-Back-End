@@ -1,0 +1,125 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+    <script src="https://kit.fontawesome.com/b0793d4303.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/js/typed.min.js"></script>
+    <link rel="stylesheet" href="/css/home.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <div id="container">
+        <h1 class="element heading"></h1>
+    </div>
+    <br>
+
+    <!-- creating form -->
+    <div class="main_div" id="box" style="display: flex;justify-content: center;margin-top: 10%;opacity: 80%; ">
+        <div class="task-box">
+            <form action="/task/create_task" method="POST" style="text-align: center; padding: 10px;">
+                <input type="text" name="Description" placeholder="Enter the task " required>
+
+                <select class="select" name="Category">
+                    <option value="Choose a Category">Choose a Category</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                    <option value="School">School</option>
+                    <option value="Cleaning">Cleaning</option>
+                    <option value="Others">Others</option>
+
+                </select>
+                <input type="date" name="Date" placeholder="Date" required>
+
+                <button type="submit" class="btn btn-primary" style="height: 50px;"><i class="fas fa-plus">
+                        Add Task
+                    </i></button>
+
+            </form>
+
+            <!-- creating the task list and displaying it -->
+
+            <div style="margin:0px;">
+                <ul style="margin-left:-38px;">
+                    <% for (let i of Task_list){%>
+
+                        <li style="list-style:none ;text-align: center;">
+
+                            <div style="height: 25%;margin:0;padding: 2%;">
+
+                                <p id="Description">
+                                    <i class="fas fa-tasks"></i>
+                                    <%= i.Description %>
+                                </p>
+
+                                <div style=" display: flex; justify-content:space-between; ">
+                                    <input type="checkbox">
+                                    <button id="Category-button"> <%= i.Category %></button>
+
+                                    <a href="/task/delete_task/?id=<%= i._id %> ">
+                                        <button class="Delete-button">
+                                        <i class="fas fa-trash-alt">Delete</i>
+                                    </button>
+                                    </a>
+                                </div>
+                                <p class="Date">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <%= i.Date %>
+                                </p>
+                            </div>
+
+                        </li>
+
+                        <% }%>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+    <script>
+        var typed = new Typed('.element', {
+            strings: ["Todo List.", "Made By Negi Ji"],
+            loop: true,
+            typeSpeed: 100
+        });
+        //to set up flash 
+
+        <% if (flash.success && flash.success.length > 0) {%>
+        new Noty({
+            theme: 'sunset',
+            text: '<%= flash.success%>',
+            type: 'success',
+            layout: 'topRight',
+            timeout: 2000
+
+        }).show();
+        <%}%>
+
+        <% if (flash.error && flash.error.length > 0) {%>
+        new Noty({
+            theme: 'sunset',
+            text: '<%= flash.error%>',
+            type: 'error',
+            layout: 'topRight',
+            timeout: 2000
+
+        }).show();
+        <%}%>
+    </script>
+
+</body>
+
+</html>
